@@ -13,20 +13,11 @@ import datetime
 
 import smtplib
 import smtplib
+from db_connection import get_shared_db_connection
 
 
-connection = psycopg2.connect(
-                      database="omrdatabase", 
-                      host="172.23.254.74", 
-                      port=5432,
-                      user="omruser",
-                      password="Omr@123" ,
-                    )
-
-cursor=connection.cursor()
-
-
-connection.autocommit=True
+connection = get_shared_db_connection()
+cursor = connection.cursor()
 
 def enterTH(job_id , trailHash):
 	query="update malware_table set status = %s,trailhash = %s where job_id = %s"

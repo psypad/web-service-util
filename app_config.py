@@ -23,6 +23,7 @@ Author:
 
 from imports import *
 from apikey import *
+from db_connection import get_shared_db_connection, get_shared_db_cursor
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -96,19 +97,26 @@ except Exception as e:
     logger.error('OAuth config error', e)
 
 # PostgreSQL configuration
-try:
-    logger.info('PostgreSQL config start')
-    connection = psycopg2.connect(
-        database=POSTGRESQL_DATABASE_NAME,
-        host=POSTGRESQL_HOSTNAME,
-        port=5432,
-        user=POSTGRESQL_USERNAME,
-        password=POSTGRESQL_PASSWORD,
-    )
-    cursor = connection.cursor()
-    connection.autocommit = True
-    logger.info('PostgreSQL config end')
+connection = None
+cursor = None
 
+
+def get_db_connection():
+    """Return a single global PostgreSQL connection for this process."""
+    global connection
+    connection = get_shared_db_connection()
+    return connection
+
+
+def get_db_cursor():
+    """Return a cursor tied to the shared global PostgreSQL connection."""
+    global cursor
+    cursor = get_shared_db_cursor()
+    return cursor
+
+
+try:
+    get_db_connection()
 except Exception as e:
     logger.error('PostgreSQL config error', e)
 

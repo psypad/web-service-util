@@ -32,7 +32,7 @@ from app_config import *
 if __name__=="__main__":
    
     logger.info('Flask initialization')
-    app.debug=bool(True)
+    app.debug = bool(True)
     logger.info('Flask start')
-    app.run(host=APPLICATION_HOST, port=APPLICATION_PORT)
+    app.run(host=APPLICATION_HOST, port=APPLICATION_PORT, use_reloader=False)
     

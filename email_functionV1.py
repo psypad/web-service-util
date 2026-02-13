@@ -33,6 +33,7 @@ from imports import *
 from pradar import network_scripts_production_ready, os_scripts_production_ready
 from multipurpose_email import *
 from database_config import *
+from db_connection import get_shared_db_connection
 
 # Constants
 RETRY_LIMIT = 3
@@ -47,15 +48,8 @@ connection2 = pika.BlockingConnection(
 )
 
 # PostgreSQL connection setup
-connection1 = psycopg2.connect(
-    database="omrdatabase",
-    host="172.23.254.74",
-    port=5432,
-    user="omruser",
-    password="Omr@123"
-)
+connection1 = get_shared_db_connection()
 cursor = connection1.cursor()
-connection1.autocommit = True
 
 # Retry tracker
 current_retries = 0

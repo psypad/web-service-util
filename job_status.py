@@ -1,5 +1,6 @@
 import psycopg2
 from flask import Flask, render_template, request
+from db_connection import get_shared_db_connection
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -9,15 +10,8 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # Max upload size: 100MB
 app.config['UPLOAD_FOLDER'] = '/home/omrapp/Desktop/filehash/'  # Upload folder path
 
 # Configure database connection
-connection = psycopg2.connect(
-    database="omrdatabase",
-    host="172.23.254.74",
-    port=5432,
-    user="omruser",
-    password="Omr@123"
-)
+connection = get_shared_db_connection()
 cursor = connection.cursor()
-connection.autocommit = True
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
