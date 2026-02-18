@@ -1,2 +1,2 @@
-# OMR_Application_server
-This repository contains all the code related to OMR that runs on GW2
+# web server util
+web server util phixing
